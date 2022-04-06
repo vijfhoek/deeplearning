@@ -43,7 +43,7 @@ model.add(LSTM(200, ))
 model.add(Dense(10, activation="sigmoid"))
 ```
 
-## Results
+## Our results
 
 
 ## Comparing to authors code
