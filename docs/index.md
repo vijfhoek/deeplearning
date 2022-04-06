@@ -25,5 +25,21 @@ After normalization, the data must be prepared for use within the LSTM. Since th
 
 //TODO: figure maken ofzo
 
-With N being the total amount of samples and H being the size of the sliding window, this would then result in an input data size of shape [N, H, 51] as we have 51 features for each timestep.
+With N being the total amount of samples and H being the size of the sliding window, this would then result in an input data size of shape [N, H, 51] as we have 51 features for each timestep. The labels for these samples are then encoded as a one-hot vector of length 10, as we have ten different drivers in the dataset.
+
+## Building the model
+Now that the data has been prepared, it is time to take a closer look at the model itself. The model conists of three different layers, of which two LSTM layers and one standard fully connected layer. The fully connected layer here uses a sigmoid activation function and is used to translate the output of the LSTM layers to a 10 length output vector, containing the probabilities for each driver based on the presented sample. The driver with the highest score in this vector is considered to be the chosen prediction.
+
+The LSTM layers do the bulk of the work. The first layer has a hidden size of 160 and acts as the input layer for the network. This means that the input size of this layer should be adapted to the window size chosen during data preperation. The second layer conists of 200 hidden units and works directly on the outputs of the first layer. Because of this, it is important that the first layer also returns sequences. Using Keras as a deeplearning library, an implementation of this network would look something like this
+
+```python
+from tensorflow.keras import Sequential
+from tensorflow.keras.layers import LSTM, Dense
+
+model = Sequential()
+model.add(LSTM(160, input_shape=(window_size, num_features), return_sequences=True ))
+model.add(LSTM(200, ))
+
+model.add(Dense(10, activation="sigmoid"))
+```
 
