@@ -17,3 +17,13 @@ A Long Short-Term Memory network, or LSTM for short, is a specialed form of neur
 Since the sensors data is all collected with a set time interval, one sample after the other holds some interdependance and is order dependant. To illustrate the interdependance of the samples, consider the following example: When taking two samples with a one interval, a car driving 10 km/h for the first sample and 0 km/h for the second sample probably came to a slow stop, while a car driving 50 km/h for the first sample and 0 km/h for the second sample had to do an emegency stop. The order for these samples then also has influence over the interpretation, as a car going from 50 to 0 is braking, while a car going from 0 to 50 is accelerating.
 
 An LSTM is specifically designed to work with these properties of the data. Predictions made by the network are not only based on the current input, but also on a combination of a certain amount of previous inputs. Hence the name Long Short-Term Memory, as it remembers what has come before.
+
+## Preparing the Data
+In order to train the LSTM, the data must first prepared. As with most AI applications, in order to make the non-linearities of a neural network function properly, the inputs should be normalized to fit in a range of either -1 to 1 or 0 to 1. 
+
+After normalization, the data must be prepared for use within the LSTM. Since the LSTM depends on the history for an input to make its prediction, the samples fed to it during training should also have this history included. A single sample in this case would then consist of the input sample, along with a set amount of history input samples. This is done by applying a sliding window function across the input data as described in the figure below. 
+
+//TODO: figure maken ofzo
+
+With N being the total amount of samples and H being the size of the sliding window, this would then result in an input data size of shape [N, H, 51] as we have 51 features for each timestep.
+
