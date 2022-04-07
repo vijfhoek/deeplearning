@@ -48,7 +48,10 @@ model.add(Dense(10, activation="sigmoid"))
 
 ## Comparing to authors code
  - authors limited to 21 features?
- -  
+ - When creating sliding window, authors overlap by half windowsize only
+ - Shuffle training set after creation, why?
+ - Authors use only 10 epochs
+ - Adding noise happens by multiplying X with an anomality level?
 
 ## Extras
 // TODO: add full list of features in dataset?
