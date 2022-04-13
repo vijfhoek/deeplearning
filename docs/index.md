@@ -43,8 +43,12 @@ model.add(LSTM(200, ))
 model.add(Dense(10, activation="sigmoid"))
 ```
 
-## Our results
+## Results & discussion
+:::{figure-md} markdown-fig
+<img src="results.jpeg" alt="fishy" class="bg-primary mb-1" width="200px">
 
+This is a caption in **Markdown**!
+:::
 
 ## Comparing to authors code
  - authors limited to 21 features?
