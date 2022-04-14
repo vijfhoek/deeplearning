@@ -75,15 +75,13 @@ Feeding the noisey data to our model results in the following graph. Here we see
 <em>Figure 3b: TODO.</em>
 </div>
 
-If we compare this result to that of the authors, we can see that they achieve significantly higher accuracies. 
-
-
-### The Importance of Regularization 
 In figure 2 we can see the results of the authors. One of the main things to notice, is the significantly higher accuracy achieved by their model. This prompts us to look back at our implementation and see where it can be improved.
 
 <img src="paperresult.png" width="400px"><br>
 *Figure 2: The accuracies of the paper's models for several standard deviations of Gaussian noise.*
 
+
+### The Importance of Regularization 
 One of the first things that comes to mind for improvement, is a case of overfitting. We achieve a high accuracy level during training, but in the validation step this drops of significantly. To combat the overfitting, we added some regularization measures. A dropout  layer was added as well as batch normalization layers. The new model now looks like this:
 
 ```python
