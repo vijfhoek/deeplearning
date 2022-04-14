@@ -95,10 +95,7 @@ The paper was true to its implementation in most aspects, though it was hard to 
 # Appendices
 ## A. List of Features
 
-<details>
-<summary>
-Table 1: Overview of features indices and their descriptions
-</summary>
+*Table 1: Overview of features indices and their descriptions*
 
 | Index | Description                                  |
 | ----- | -------------------------------------------- |
@@ -153,4 +150,3 @@ Table 1: Overview of features indices and their descriptions
 | 48    | Acceleration speed - Lateral                 |
 | 49    | Steering wheel speed                         |
 | 50    | Steering wheel angle                         |
-</details>
