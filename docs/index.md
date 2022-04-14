@@ -25,7 +25,7 @@ In order to train the LSTM, the data must first prepared. As with most AI applic
 
 After normalization, the data must be prepared for use within the LSTM. Since the LSTM depends on the history for an input to make its prediction, the samples fed to it during training should also have this history included. A single sample in this case would then consist of the input sample, along with a set amount of history input samples. This is done by applying a sliding window function across the input data as described in the figure below. 
 
-//TODO: add figure
+![Sliding window](slidingwindow.png)
 
 With N being the total amount of samples and H being the size of the sliding window, this would then result in an input data size of shape [N, H, 51] as we have 51 features for each timestep. The labels for these samples are then encoded as a one-hot vector of length 10, as we have ten different drivers in the dataset.
 
