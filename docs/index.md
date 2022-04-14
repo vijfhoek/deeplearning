@@ -154,4 +154,9 @@ The paper was true to its implementation in most aspects, though it was hard to 
     .page-header {
         background: url('https://www.gannett-cdn.com/presto/2020/01/08/PDTF/34eb2a61-57e7-4dbf-81a4-03b872db0c73-GettyImages-1087233832.jpg');
     }
+
+    .btn {
+        color: rgb(255, 255, 255);
+        background-color: rgba(0, 0, 0, 0.4);
+    }
 </style>
