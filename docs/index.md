@@ -113,34 +113,6 @@ As can be seen, these results come closer to what is presented in the paper, lea
 
 // OUD STUK HIERONDER 
 
-
-After training the model it is evaluated on the test data. Because sensor data would be expected to be noisy, the authors choose to disturb the test data with various levels of white noise before evaluation. This allows them to see how robust the model is to noise by seeing the accuracy dropoff. 
-Our interpretation of how the noise was explained in the paper was that the amount of noise added should depend on the data variance, scaled by a factor between zero and two. However, when trying to recreate figures showing the noisy data, we found we actually needed to use that factor as the standard deviation directly, not use the data variance. 
-We also found it to be important to only normalize the test data after adding the noise. Doing this the other way around resulted in a very strong dropoff in accuracy with increasing noise level. 
-
-<img src="paperresult.png" width="400px"><br>
-*Figure 2: The accuracies of the paper's models for several standard deviations of Gaussian noise.*
-<div style="display: flex; width: 100%">
-<div>
-
-<img src="no_earlystop.png" alt="Our results without early stop"><br>
-<em>Figure 3a: TODO.</em>
-
-</div>
-<div>
-
-
-<img src="earlystop_and_dropout.png" alt="Our results with early stop and drop-out"><br>
-<em>Figure 3b: TODO.</em>
-
-</div>
-</div>
-
-In the two figures above we see the results with increasing noise level for both the authors' LSTM and ours. We derived the noise levels tested by the authors from this graph and used the same ones. 
-
-## Discussion
-The first thing to notice from the results is that the slope of both figures is very similar. This means our model is similarly stable under the addition of noise, though it is slightly less accurate overall. We discuss why this may be below. 
-
 ### Comparing to authors code
 In this section, we compare their code to their description in the paper and our implementation. During the creation of our reproduction, we have not looked at the authors' code in order to avoid influencing our work. After we finished our version, we looked at their code, which is available at [their github page](https://github.com/Abeni18/Deep-LSTM-for-Driver-Identification-). Unfortunately, we found this not to be very helpful.
 
