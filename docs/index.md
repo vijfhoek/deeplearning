@@ -104,6 +104,12 @@ Figure 3 now shows the results of this improved model.
 ### Cheating the System
 Looking at figure 3, it is clear that there is still a lot of room for improvement compared to the model of the authors... or is there? 
 
+One assumption that can be made as to how the high accuracies in the paper are achieved is that instead of using dedicated test data, either the train data was used for this robustness test or it was done using the complete dataset. To test this assumption, we tried the same for our model. The results for this are show in figure 4.
+
+<img src="fakescore.png" width="400px"><br>
+*Figure 4: Testing results of the model done over train set with added noise*
+
+As can be seen, these results come closer to what is presented in the paper, leading us to believe that they did not properly evaluate their model.
 
 // OUD STUK HIERONDER 
 
