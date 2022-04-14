@@ -19,20 +19,20 @@ Since the sensor data is all collected with a set time interval, one sample afte
 An LSTM is specifically designed to work with these properties of the data. Predictions made by the network are not only based on the current input, but are also based on a combination of a certain amount of previous inputs. Hence the name Long Short-Term Memory, as it remembers what has come before.
 
 ## Preparing the Data
-In order to train the LSTM, the data must first prepared. As with most AI applications, in order to make the non-linearities of a neural network function properly, the inputs should be normalized to fit in a range of 0 to 1. 
+To train the LSTM, the data must first be prepared. As with most AI applications, to make the non-linearities of a neural network function properly, the inputs should be normalized to fit in a range of 0 to 1. 
 
-After normalization, the data must be prepared for use within the LSTM. Since the LSTM depends on the history for an input to make its prediction, the samples fed to it during training should also have this history included. A single sample in this case would then consist of the input sample, along with a set amount of history input samples. This is done by applying a sliding window function across the input data as described in the figure below. 
+After normalization, the data must be prepared for use within the LSTM. Since the LSTM depends on the history of the input to make its prediction, the samples fed to it during training should also have this history included. A single sample in this case would then consist of the input sample, along with a set amount of history input samples. This is done by applying a sliding window function across the input data as described in the figure below. 
 
 ![Sliding window](slidingwindow.png)<br>
 *Figure 1: Overlap sliding window method between consecutive sequence
-of data of feature 1 and 2*
+of data of features 1 and 2*
 
 With N being the total amount of samples and H being the size of the sliding window, this would then result in an input data size of shape [N, H, 51] as we have 51 features for each timestep. The labels for these samples are then encoded as a one-hot vector of length 10, as we have ten different drivers in the dataset.
 
 ## Building the model
-Now that the data has been prepared, it is time to take a closer look at the model itself. The model conists of three different layers, of which two LSTM layers and one standard fully connected layer. The fully connected layer here uses a sigmoid activation function and is used to translate the output of the LSTM layers to a 10 length output vector, containing the probabilities for each driver based on the presented sample. The driver with the highest score in this vector is considered to be the chosen prediction.
+Now that the data has been prepared, it is time to take a closer look at the model itself. The model consists of three different layers, of which two LSTM layers and one standard fully connected layer. The fully connected layer here uses a sigmoid activation function and is used to translate the output of the LSTM layers to a 10 length output vector, containing the probabilities for each driver based on the presented sample. The driver with the highest score in this vector is considered to be the chosen prediction.
 
-The LSTM layers do the bulk of the work. The first layer has a hidden size of 160 and acts as the input layer for the network. This means that the input size of this layer should be adapted to the window size chosen during data preperation. The second layer conists of 200 hidden units and works directly on the outputs of the first layer. Because of this, it is important that the first layer also returns sequences. Using Keras as a deeplearning library, an implementation of this network would look something like this
+The LSTM layers do the bulk of the work. The first layer has a hidden size of 160 and acts as the input layer for the network. This means that the input size of this layer should be adapted to the window size chosen during data preparation. The second layer consists of 200 hidden units and works directly on the outputs of the first layer. Because of this, it is important that the first layer also returns sequences. Using Keras as a deep learning library, an implementation of this network would look something like this
 
 ```python
 from tensorflow.keras import Sequential
@@ -46,7 +46,7 @@ model.add(Dense(10, activation="sigmoid"))
 ```
 
 ## Training and Testing
-Now that we created a simple version of the model, it is time to train it and analyze the results. For training, we first need to split the data in train and test subsets, for example by using `train_train_test_split` from `sklearn`. We chose a test size 0.1, which means 10% of the data will be used for the test set.
+Now that we created a simple version of the model, it is time to train it and analyze the results. For training, we first need to split the data into train and test subsets, for example by using `train_train_test_split` from `sklearn`. We chose a test size 0.1, which means 10% of the data will be used for the test set.
 
 ```python
 from sklearn.model_selection import train_test_split
@@ -55,20 +55,23 @@ x_train, x_test, y_train, y_test = train_test_split(
 )
 ```
 
-Training the model was done over 500 epochs with a batch size of 128, resulting in a training accuracy of over 97% percent. This looks promising, but does paint the full picture.
+Training the model was done over 500 epochs with a batch size of 128, resulting in a training accuracy of over 97% percent. This looks promising but does paint the full picture.
 
 ### Evaluating the Results
 In order to get a better view of the realworld performance, one should always evaluate their model with data it has never seen before, in this case the data in our test set. This makes sure that you do not overfit to your training set, resulting in an exaggerated performance metric for your model. By evaluating over the test set, the real world accuracy drops to around 80%. 
 
 
-### Noisey Data
+### Noisy Data
 The next evaluation step would be to compare our results to those of the authors of the paper. For this we first need to add different factors of noise to the input data. The authors of the original paper used white noise to emulate disturbances in the data coming from the sensors in a real world application, to test the robustness of their model. 
 
-The noisey data is created by adding a layer of gaussian noise, with varying levels of standard deviation centered around 0, to the input data. This is then fed to the model, which tries to predict the driver. 
+Our interpretation of how the noise was explained in the paper was that the amount of noise added should depend on the data variance, scaled by a factor between zero and two. However, when trying to recreate figures showing the noisy data, we found we actually needed to use that factor as the standard deviation directly, not use the data variance. 
+We also found it to be important to only normalize the test data after adding the noise. Doing this the other way around resulted in a very strong dropoff in accuracy with increasing noise level. 
+
+The noisy data is created by adding a layer of Gaussian noise, with varying levels of standard deviation centered around 0, to the input data. This is then fed to the model, which tries to predict the driver. 
 
 ### Model Robustness 
 
-Feeding the noisey data to our model results in the following graph. Here we see the accuracy compared to the standard deviation of the noise added. A higher standard deviation means a higher amount of noise, so the model has a harder time of recognizing the driver.
+Feeding the noisy data to our model results in the following graph. Here we see the accuracy compared to the standard deviation of the noise added. A higher standard deviation means a higher amount of noise, so the model has a harder time of recognizing the driver.
 
 <div>
 <img src="no_earlystop.png" alt="Our results with early stop and drop-out"><br>
