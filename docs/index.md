@@ -70,7 +70,7 @@ In order to get a better view of the real world performance, one should always e
 ### Noisy Data
 The next evaluation step would be to compare our results to those of the authors of the paper. For this, we first need to add different factors of noise to the input data. The authors of the original paper used white noise to emulate disturbances in the data coming from the sensors in a real-world application, to test the robustness of their model. 
 
-![Sliding window](slidingwindow.png)<br>
+![Sliding window](noise.png)<br>
 *Figure 2: Effect of different levels of noise added to the original data*
 
 Our interpretation of how the noise was explained in the paper was that the amount of noise added should depend on the data variance, scaled by a factor between zero and two. However, when trying to recreate figure 2 above, which was taken from the source paper, we found we needed to use that factor as the standard deviation directly, not use the data variance. 
