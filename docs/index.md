@@ -1,11 +1,5 @@
 # Driver Identification Using Deep LSTM Network
 
-<style>
-    .page-header {
-        background: url('https://www.gannett-cdn.com/presto/2020/01/08/PDTF/34eb2a61-57e7-4dbf-81a4-03b872db0c73-GettyImages-1087233832.jpg');
-    }
-</style>
-
 While driving on your way to work, you come across a lot of other road users. More often than not, you can judge the way people drive from an outside perspective. Are they sticking to the right lane behind the trucks while going 80 km/h on the freeway, or are they that tail-gating german luxury car driver that really needs to pass you, even though you're already doing 20 km/h over the speedlimit? Considering that we as humans already can have somewhat of an indication of the driving style of people by simply sharing the road with them, what could a computer then achieve when it has access to the multitude of sensors available in a modern car? 
 
 Automatically identifying the user of a car based on their driving style would come with a plethora of applications. It could for example be used to check if the owner of the car is the one actually driving which then could be used for theft prevention. Another possibility is to use this data for more specialised insurance plans, or one could image it to be used to judge the driving styles of people within a shared fleet of cars. 
@@ -51,7 +45,6 @@ model.add(LSTM(200, ))
 model.add(Dense(10, activation="sigmoid"))
 ```
 
-We found 250 training epochs to be an adequate number for reasonable results. 
 
 ## Evaluation & results
 
@@ -90,7 +83,7 @@ We were unable to verify the structure of the model, since for their version the
 
 The unclear method for noise generation was already mentioned earlier in this blog. In the code, this method seems to be missing as well, having been rewritten for the creation of the anomaly plots further on in the paper. 
 
-Though they say they use 10% of the data to test their model, they use a 15% split to evaluate the model. Furthermore, this test set is made after the already-trained model is loaded in and so it is not guaranteed to be fully distinct from the training set. We theorize that this may be why the authors achieve a higher accuracy than we do. 
+Though they say they use 10% of the data to test their model, they use a 15% split to evaluate the model. Furthermore, this test set is made after the already-trained model is loaded in and so it is not guaranteed to be fully distinct from the training set. We theorize that this may be why the authors achieve a higher accuracy than we do. When we evaluate our model on the training set instead of the test set at various noise levels, we see very similar results to those found in the paper. 
 
 
 ## Conclusion
@@ -156,3 +149,9 @@ The paper was true to its implementation in most aspects, though it was hard to 
 | 48    | Acceleration speed - Lateral                 |
 | 49    | Steering wheel speed                         |
 | 50    | Steering wheel angle                         |
+
+<style>
+    .page-header {
+        background: url('https://www.gannett-cdn.com/presto/2020/01/08/PDTF/34eb2a61-57e7-4dbf-81a4-03b872db0c73-GettyImages-1087233832.jpg');
+    }
+</style>
