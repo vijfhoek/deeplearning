@@ -125,7 +125,8 @@ Though they say they use 10% of the data to test their model, they use a 15% spl
 
 
 ## Conclusion
-The paper was true to its implementation in most aspects, though it was hard to evaluate the source code as it was incomplete. Nevertheless, we were able to create a reproduction that was similar in stability under noise to the original results, and deem this paper sufficiently reproducible.
+The paper was true to its implementation in most aspects, though it was hard to evaluate the source code as it was incomplete. Our reproduction also leads us to strongly suspect the evaluation of the model was not done correctly in the original paper, due to the authors not using an independent test set. This proves the value of independently reproducing papers and checking whether the results are as good as they seem, or too good to be true. 
+
 
 ---
 
