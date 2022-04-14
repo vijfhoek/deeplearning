@@ -59,16 +59,15 @@ We also found it to be important to only normalize the test data after adding th
 <div style="display: flex; width: 100%">
 <div>
 
-![Our results without early stop](no_earlystop.png)<br>
-
-*Figure 3a: TODO.*
+<img src="no_earlystop.png" alt="Our results without early stop"><br>
+<em>Figure 3a: TODO.</em>
 
 </div>
 <div>
 
-![Our results with early stop and drop-out](earlystop_and_dropout.png)
 
-*Figure 3b: TODO.*
+<img src="earlystop_and_dropout.png" alt="Our results with early stop and drop-out"><br>
+<em>Figure 3b: TODO.</em>
 
 </div>
 </div>
@@ -89,14 +88,17 @@ Though they say they use 10% of the data to test their model, they use a 15% spl
 
 
 ## Conclusion
-The paper was true to its implementation in most aspects, though there were some deviations in the code when compared. Nevertheless, we were able to create a reproduction that was similar in stability under noise to the original results, and deem this paper sufficiently reproducible.
+The paper was true to its implementation in most aspects, though it was hard to evaluate the source code as it was incomplete. Nevertheless, we were able to create a reproduction that was similar in stability under noise to the original results, and deem this paper sufficiently reproducible.
 
 ---
 
 # Appendices
 ## A. List of Features
 
-*Table 1: Overview of features indices and their descriptions*
+<details>
+<summary>
+Table 1: Overview of features indices and their descriptions
+</summary>
 
 | Index | Description                                  |
 | ----- | -------------------------------------------- |
@@ -151,7 +153,4 @@ The paper was true to its implementation in most aspects, though there were some
 | 48    | Acceleration speed - Lateral                 |
 | 49    | Steering wheel speed                         |
 | 50    | Steering wheel angle                         |
-| 51    | Time(s)                                      |
-| 52    | Class                                        |
-| 53    | PathOrder                                    |
-
+</details>
