@@ -114,16 +114,14 @@ One assumption that can be made as to how the high accuracies in the paper are a
 
 As can be seen, these results come closer to what is presented in the paper, leading us to believe that they did not properly evaluate their model.
 
-// OUD STUK HIERONDER 
-
-### Comparing to authors code
-In this section, we compare their code to their description in the paper and our implementation. During the creation of our reproduction, we have not looked at the authors' code in order to avoid influencing our work. After we finished our version, we looked at their code, which is available at [their github page](https://github.com/Abeni18/Deep-LSTM-for-Driver-Identification-). Unfortunately, we found this not to be very helpful.
+### Comparing to the authors' code
+In this section, we compare their code to their description in the paper and our implementation. During the creation of our reproduction, we have not looked at the authors' code in order to avoid influencing our work. After we finished our version, we looked at their code, which is available on [their GitHub page](https://github.com/Abeni18/Deep-LSTM-for-Driver-Identification-). Unfortunately, we found this not to be very helpful.
 
 We were unable to verify the structure of the model, since for their version the authors load an already trained model from an H5 file. This makes it impossible to compare the two versions. 
 
 The unclear method for noise generation was already mentioned earlier in this blog. In the code, this method seems to be missing as well, having been rewritten for the creation of the anomaly plots further on in the paper. 
 
-Though they say they use 10% of the data to test their model, they use a 15% split to evaluate the model. Furthermore, this test set is made after the already-trained model is loaded in and so it is not guaranteed to be fully distinct from the training set. We theorize that this may be why the authors achieve a higher accuracy than we do. When we evaluate our model on the training set instead of the test set at various noise levels, we see very similar results to those found in the paper. 
+Though they say they use 10% of the data to test their model, they use a 15% split to evaluate the model. Furthermore, as we already suspected, this test set is made after the already-trained model is loaded in and so it is not guaranteed to be fully distinct from the training set. 
 
 
 ## Conclusion
