@@ -1,3 +1,9 @@
+<style>
+    .page-header {
+        background: url('https://www.gannett-cdn.com/presto/2020/01/08/PDTF/34eb2a61-57e7-4dbf-81a4-03b872db0c73-GettyImages-1087233832.jpg');
+    }
+</style>
+
 # Driver Identification Using Deep LSTM Network
 
 While driving on your way to work, you come across a lot of other road users. More often than not, you can judge the way people drive from an outside perspective. Are they sticking to the right lane behind the trucks while going 80 km/h on the freeway, or are they that tail-gating german luxury car driver that really needs to pass you, even though you're already doing 20 km/h over the speedlimit? Considering that we as humans already can have somewhat of an indication of the driving style of people by simply sharing the road with them, what could a computer then achieve when it has access to the multitude of sensors available in a modern car? 
