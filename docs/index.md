@@ -1,5 +1,11 @@
 # Driver Identification Using Deep LSTM Network
 
+- Chris Bras (c.s.bras@student.tudelft.nl, 4394763)
+- Lyanne de Haas (n.m.c.dehaas@student.tudelft.nl, 4361660)
+- Sijmen Schoon (s.j.schoon@student.tudelft.nl, 5438683)
+
+---
+
 While driving on your way to work, you come across a lot of other road users. More often than not, you can judge the way people drive from an outside perspective. Are they sticking to the right lane behind the trucks while going 80 km/h on the freeway, or are they that tail-gating German luxury car driver that really needs to pass you, even though you're already doing 20 km/h over the speed limit? Considering that we as humans already can have somewhat of an indication of the driving style of people by simply sharing the road with them, what could a computer then achieve when it has access to the multitude of sensors available in a modern car? 
 
 Automatically identifying the user of a car based on their driving style would come with a plethora of applications. It could for example be used to check if the owner of the car is the one actually driving which then could be used for theft prevention. Another possibility is to use this data for more specialised insurance plans, or one could imagine it to be used to judge the driving styles of people within a shared fleet of cars. 
@@ -58,34 +64,37 @@ x_train, x_test, y_train, y_test = train_test_split(
 Training the model was done over 500 epochs with a batch size of 128, resulting in a training accuracy of over 97% percent. This looks promising but does paint the full picture.
 
 ### Evaluating the Results
-In order to get a better view of the realworld performance, one should always evaluate their model with data it has never seen before, in this case the data in our test set. This makes sure that you do not overfit to your training set, resulting in an exaggerated performance metric for your model. By evaluating over the test set, the real world accuracy drops to around 80%. 
+In order to get a better view of the real world performance, one should always evaluate their model with data it has never seen before, in this case, the data in our test set. This makes sure that you do not overfit to your training set, resulting in an exaggerated performance metric for your model. By evaluating over the test set, the real-world accuracy drops to around 80%. 
 
 
 ### Noisy Data
-The next evaluation step would be to compare our results to those of the authors of the paper. For this we first need to add different factors of noise to the input data. The authors of the original paper used white noise to emulate disturbances in the data coming from the sensors in a real world application, to test the robustness of their model. 
+The next evaluation step would be to compare our results to those of the authors of the paper. For this, we first need to add different factors of noise to the input data. The authors of the original paper used white noise to emulate disturbances in the data coming from the sensors in a real-world application, to test the robustness of their model. 
 
-Our interpretation of how the noise was explained in the paper was that the amount of noise added should depend on the data variance, scaled by a factor between zero and two. However, when trying to recreate figures showing the noisy data, we found we actually needed to use that factor as the standard deviation directly, not use the data variance. 
-We also found it to be important to only normalize the test data after adding the noise. Doing this the other way around resulted in a very strong dropoff in accuracy with increasing noise level. 
+![Sliding window](slidingwindow.png)<br>
+*Figure 2: Effect of different levels of noise added to the original data*
 
-The noisy data is created by adding a layer of Gaussian noise, with varying levels of standard deviation centered around 0, to the input data. This is then fed to the model, which tries to predict the driver. 
+Our interpretation of how the noise was explained in the paper was that the amount of noise added should depend on the data variance, scaled by a factor between zero and two. However, when trying to recreate figure 2 above, which was taken from the source paper, we found we needed to use that factor as the standard deviation directly, not use the data variance. 
+We also found it to be important to only normalize the test data after adding the noise. Doing this the other way around resulted in a very strong dropoff in accuracy with the increasing noise levels.
+
+The noisy data is created by adding a layer of Gaussian noise, with varying levels of standard deviation centred around 0, to the input data. This is then fed to the model, which tries to predict the driver. 
 
 ### Model Robustness 
 
-Feeding the noisy data to our model results in the following graph. Here we see the accuracy compared to the standard deviation of the noise added. A higher standard deviation means a higher amount of noise, so the model has a harder time of recognizing the driver.
+Feeding the noisy data to our model results in the following graph. Here we see the accuracy compared to the standard deviation of the noise added. A higher standard deviation means a higher amount of noise, so the model has a harder time recognizing the driver.
 
 <div>
-<img src="no_earlystop.png" alt="Our results with early stop and drop-out"><br>
-<em>Figure 3b: TODO.</em>
+<img src="no_earlystop.png" alt="Our results without early stop and drop-out"><br>
+<em>Figure 3: Initial results for a simple model with no extensions.</em>
 </div>
 
-In figure 2 we can see the results of the authors. One of the main things to notice, is the significantly higher accuracy achieved by their model. This prompts us to look back at our implementation and see where it can be improved.
+In figure 4 we can see the results of the authors. One of the main things to notice is the significantly higher accuracy achieved by their model. This prompts us to look back at our implementation and see where it can be improved.
 
 <img src="paperresult.png" width="400px"><br>
-*Figure 2: The accuracies of the paper's models for several standard deviations of Gaussian noise.*
+*Figure 4: The accuracies of the paper's models for several standard deviations of Gaussian noise.*
 
 
 ### The Importance of Regularization 
-One of the first things that comes to mind for improvement, is a case of overfitting. We achieve a high accuracy level during training, but in the validation step this drops of significantly. To combat the overfitting, we added some regularization measures. A dropout  layer was added as well as batch normalization layers. The new model now looks like this:
+One of the first things that come to mind for improvement, is a case of overfitting. We achieve a high accuracy level during training, but in the validation step this drops off significantly. To combat the overfitting, we added some regularization measures. A dropout layer was added as well as batch normalization layers. The new model now looks like this:
 
 ```python
 model = Sequential()
@@ -97,27 +106,27 @@ model.add(BatchNormalization())
 model.add(Dense(10, activation="sigmoid"))
 ```
 
-Figure 3 now shows the results of this improved model. 
+Figure 5 now shows the results of this improved model. 
 
 
 <img src="earlystop_and_dropout.png" width="400px"><br>
-*Figure 3: Testing results of the model with some regularization methods applied*
+*Figure 5: Testing results of the model with some regularization methods applied*
 
 
 ### Cheating the System
-Looking at figure 3, it is clear that there is still a lot of room for improvement compared to the model of the authors... or is there? 
+Looking at figure 5, it is clear that there is still a lot of room for improvement compared to the model of the authors... or is there? 
 
-One assumption that can be made as to how the high accuracies in the paper are achieved is that instead of using dedicated test data, either the train data was used for this robustness test or it was done using the complete dataset. To test this assumption, we tried the same for our model. The results for this are show in figure 4.
+One assumption that can be made as to how the high accuracies in the paper are achieved is that instead of using dedicated test data, either the train data was used for this robustness test or it was done using the complete dataset. To test this assumption, we tried the same for our model. The results for this are shown in figure 6.
 
 <img src="fakescore.png" width="400px"><br>
-*Figure 4: Testing results of the model done over train set with added noise*
+*Figure 6: Testing results of the model done over train set with added noise*
 
 As can be seen, these results come closer to what is presented in the paper, leading us to believe that they did not properly evaluate their model.
 
 ### Comparing to the authors' code
-In this section, we compare their code to their description in the paper and our implementation. During the creation of our reproduction, we have not looked at the authors' code in order to avoid influencing our work. After we finished our version, we looked at their code, which is available on [their GitHub page](https://github.com/Abeni18/Deep-LSTM-for-Driver-Identification-). Unfortunately, we found this not to be very helpful.
+In this section, we compare their code to their description in the paper and our implementation. During the creation of our reproduction, we have not looked at the authors' code to avoid influencing our work. After we finished our version, we looked at their code, which is available on [their GitHub page](https://github.com/Abeni18/Deep-LSTM-for-Driver-Identification-). Unfortunately, we found this not to be very helpful.
 
-We were unable to verify the structure of the model, since for their version the authors load an already trained model from an H5 file. This makes it impossible to compare the two versions. 
+We were unable to verify the structure of the model since for their version the authors load an already trained model from an H5 file. This makes it impossible to compare the two versions. 
 
 The unclear method for noise generation was already mentioned earlier in this blog. In the code, this method seems to be missing as well, having been rewritten for the creation of the anomaly plots further on in the paper. 
 
