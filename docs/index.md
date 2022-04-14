@@ -220,4 +220,8 @@ The paper was true to its implementation in most aspects, though it was hard to 
         color: rgb(255, 255, 255);
         background-color: rgba(0, 0, 0, 0.4);
     }
+
+    .site-footer {
+        display: none;
+    }
 </style>
