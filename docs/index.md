@@ -45,8 +45,70 @@ model.add(LSTM(200, ))
 model.add(Dense(10, activation="sigmoid"))
 ```
 
+## Training and Testing
+Now that we created a simple version of the model, it is time to train it and analyze the results. For training, we first need to split the data in train and test subsets, for example by using `train_train_test_split` from `sklearn`. We chose a test size 0.1, which means 10% of the data will be used for the test set.
 
-## Evaluation & results
+```python
+from sklearn.model_selection import train_test_split
+x_train, x_test, y_train, y_test = train_test_split(
+    x_data, y_data[:], test_size=0.10
+)
+```
+
+Training the model was done over 500 epochs with a batch size of 128, resulting in a training accuracy of over 97% percent. This looks promising, but does paint the full picture.
+
+### Evaluating the Results
+In order to get a better view of the realworld performance, one should always evaluate their model with data it has never seen before, in this case the data in our test set. This makes sure that you do not overfit to your training set, resulting in an exaggerated performance metric for your model. By evaluating over the test set, the real world accuracy drops to around 80%. 
+
+
+### Noisey Data
+The next evaluation step would be to compare our results to those of the authors of the paper. For this we first need to add different factors of noise to the input data. The authors of the original paper used white noise to emulate disturbances in the data coming from the sensors in a real world application, to test the robustness of their model. 
+
+The noisey data is created by adding a layer of gaussian noise, with varying levels of standard deviation centered around 0, to the input data. This is then fed to the model, which tries to predict the driver. 
+
+### Model Robustness 
+
+Feeding the noisey data to our model results in the following graph. Here we see the accuracy compared to the standard deviation of the noise added. A higher standard deviation means a higher amount of noise, so the model has a harder time of recognizing the driver.
+
+<div>
+<img src="no_earlystop.png" alt="Our results with early stop and drop-out"><br>
+<em>Figure 3b: TODO.</em>
+</div>
+
+If we compare this result to that of the authors, we can see that they achieve significantly higher accuracies. 
+
+
+### The Importance of Regularization 
+In figure 2 we can see the results of the authors. One of the main things to notice, is the significantly higher accuracy achieved by their model. This prompts us to look back at our implementation and see where it can be improved.
+
+<img src="paperresult.png" width="400px"><br>
+*Figure 2: The accuracies of the paper's models for several standard deviations of Gaussian noise.*
+
+One of the first things that comes to mind for improvement, is a case of overfitting. We achieve a high accuracy level during training, but in the validation step this drops of significantly. To combat the overfitting, we added some regularization measures. A dropout  layer was added as well as batch normalization layers. The new model now looks like this:
+
+```python
+model = Sequential()
+model.add(LSTM(160, input_shape=(window_size, num_features), return_sequences=True ))
+model.add(Dropout(0.5))
+model.add(BatchNormalization())
+model.add(LSTM(200, ))
+model.add(BatchNormalization())
+model.add(Dense(10, activation="sigmoid"))
+```
+
+Figure 3 now shows the results of this improved model. 
+
+
+<img src="earlystop_and_dropout.png" width="400px"><br>
+*Figure 3: Testing results of the model with some regularization methods applied*
+
+
+### Cheating the System
+Looking at figure 3, it is clear that there is still a lot of room for improvement compared to the model of the authors... or is there? 
+
+
+// OUD STUK HIERONDER 
+
 
 After training the model it is evaluated on the test data. Because sensor data would be expected to be noisy, the authors choose to disturb the test data with various levels of white noise before evaluation. This allows them to see how robust the model is to noise by seeing the accuracy dropoff. 
 Our interpretation of how the noise was explained in the paper was that the amount of noise added should depend on the data variance, scaled by a factor between zero and two. However, when trying to recreate figures showing the noisy data, we found we actually needed to use that factor as the standard deviation directly, not use the data variance. 
@@ -54,7 +116,6 @@ We also found it to be important to only normalize the test data after adding th
 
 <img src="paperresult.png" width="400px"><br>
 *Figure 2: The accuracies of the paper's models for several standard deviations of Gaussian noise.*
-
 <div style="display: flex; width: 100%">
 <div>
 
