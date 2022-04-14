@@ -1,4 +1,4 @@
-# Driver Identification Using Deep LSTM Network
+# LSTM Network for Driver Identification: Brand New Innovation or Misrepresentation?
 
 - Chris Bras (c.s.bras@student.tudelft.nl, 4394763)
 - Lyanne de Haas (n.m.c.dehaas@student.tudelft.nl, 4361660)
